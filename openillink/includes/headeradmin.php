@@ -45,6 +45,9 @@ header ('Content-type: text/html; charset=utf-8');
 error_reporting(-1);
 ini_set('display_errors', 'On');
 
+// Set the $siteUrl as base url for the stylesheets, scripts and links.
+$configSiteUrl = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']);
+
 // paniers à afficher : in / out / sent / default = in
 if(!isset($_GET['folder']))
 {
@@ -88,7 +91,7 @@ echo '
 ';
 
 echo '
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="'.$configSiteUrl.'/js/bulma.js"></script>
 <script type="text/javascript" src="'.$configSiteUrl.'/js/script.js"></script>

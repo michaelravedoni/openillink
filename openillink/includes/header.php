@@ -32,6 +32,9 @@ $debugOn = false;
 error_reporting(-1);
 ini_set('display_errors', 'On');
 
+// Set the $siteUrl as base url for the stylesheets, scripts and links.
+$siteUrl = (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'] . dirname($_SERVER['PHP_SELF']);
+
 echo "<!DOCTYPE html>\n";
 echo "<html lang=\"" . $lang . "\">\n";
 echo "<head>\n";
@@ -46,19 +49,19 @@ else
 echo "</title>\n";
 echo "\n";
 
-echo '<link rel="home" href="'.$configSiteUrl.'" />' ;
+echo '<link rel="home" href="'.$siteUrl.'" />' ;
 
 echo '
-<link rel="stylesheet" href="'.$configSiteUrl.'/css/bulma.min.css">
-<link rel="stylesheet" href="'.$configSiteUrl.'/css/bulma-style.css">
-<link rel="stylesheet" media="print" href="'.$configSiteUrl.'/css/print.css">
-<link rel="stylesheet" href="'.$configSiteUrl.'/css/awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="'.$siteUrl.'/css/bulma.min.css">
+<link rel="stylesheet" href="'.$siteUrl.'/css/bulma-style.css">
+<link rel="stylesheet" media="print" href="'.$siteUrl.'/css/print.css">
+<link rel="stylesheet" href="'.$siteUrl.'/css/awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">';
 
 echo '
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script type="text/javascript" src="'.$configSiteUrl.'/js/bulma.js"></script>
-<script type="text/javascript" src="'.$configSiteUrl.'/js/script.js"></script>
+<script type="text/javascript" src="'.$siteUrl.'/js/bulma.js"></script>
+<script type="text/javascript" src="'.$siteUrl.'/js/script.js"></script>
 ';
 
 echo "</head>\n";
@@ -71,7 +74,7 @@ echo '
 <nav class="navbar has-shadow">
 	<div class="container">
 		<div class="navbar-brand">
-			<a class="navbar-item" href="'.$configSiteUrl.'"><span class="title is-3">'.$openIllinkOfficialTitle[$lang].'</span></a>
+			<a class="navbar-item" href="'.$siteUrl.'"><span class="title is-3">'.$openIllinkOfficialTitle[$lang].'</span></a>
 			<div class="navbar-burger burger" data-target="navMenu">
 				<span></span>
 				<span></span>
@@ -87,11 +90,11 @@ echo '
 				<div class="navbar-item has-dropdown is-hoverable">
 					<a class="navbar-link">'.strtoupper($lang).'</a>
 					<div class="navbar-dropdown">
-						<a class="navbar-item" href="'.$configSiteUrl.'?lang=en" title="English">EN</a>
-						<a class="navbar-item" href="'.$configSiteUrl.'?lang=fr" title="Français">FR</a>
-						<a class="navbar-item" href="'.$configSiteUrl.'?lang=de" title="Deutsch">DE</a>
-						<a class="navbar-item" href="'.$configSiteUrl.'?lang=it" title="Italiano">IT</a>
-						<a class="navbar-item" href="'.$configSiteUrl.'?lang=es" title="Español">ES</a>
+						<a class="navbar-item" href="'.$siteUrl.'?lang=en" title="English">EN</a>
+						<a class="navbar-item" href="'.$siteUrl.'?lang=fr" title="Français">FR</a>
+						<a class="navbar-item" href="'.$siteUrl.'?lang=de" title="Deutsch">DE</a>
+						<a class="navbar-item" href="'.$siteUrl.'?lang=it" title="Italiano">IT</a>
+						<a class="navbar-item" href="'.$siteUrl.'?lang=es" title="Español">ES</a>
 					</div>
 				</div>
 				<span class="navbar-item"><a class="button is-info" href="index.php" title="' .$neworder[$lang]. '">' .$neworder[$lang]. '</a></span>
