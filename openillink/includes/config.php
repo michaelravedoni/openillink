@@ -297,6 +297,4 @@ $configMMSdiscoveryurl["de"] = "";
 $configMMSdiscoveryurl["it"] = "";
 $configMMSdiscoveryurl["es"] = "";
 
-// URL site
-$configSiteUrl = "http://openillink/flat/openillink";
 ?>
