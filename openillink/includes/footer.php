@@ -33,7 +33,7 @@ echo '
 	<footer class="footer">
 		<div class="container">
 			<div class="content has-text-centered">
-				<p><strong>'.$openIllinkOfficialTitle[$lang].'</strong> by <a href="http://www.pablog.ch" target="_blank">Pablo Iriarte</a>,  <a href="http://jankrause.net" target="_blank">Jan Krause</a>, <a href="http://www.chuv.ch/bdfm/" target="_blank">BiUM</a>/<a href="http://www.chuv.ch">CHUV</a> Lausanne, <a href="http://www.unige.ch/medecine/bibliotheque/" target="_blank">BFM</a>, <a href="http://www.unige.ch" target="_blank">UNIGE</a> Genève</p>
+				<p><strong>'.$sitetitle[$lang].'</strong> by <a href="http://www.pablog.ch" target="_blank">Pablo Iriarte</a>,  <a href="http://jankrause.net" target="_blank">Jan Krause</a>, <a href="http://www.chuv.ch/bdfm/" target="_blank">BiUM</a>/<a href="http://www.chuv.ch">CHUV</a> Lausanne, <a href="http://www.unige.ch/medecine/bibliotheque/" target="_blank">BFM</a>, <a href="http://www.unige.ch" target="_blank">UNIGE</a> Genève</p>
 				<p>'.$configteam[$lang].'. The source code is licensed under <a href="https://opensource.org/licenses/gpl-3.0.html">GPL v3</a></p>
 				<p><a class="icon" href="https://github.com/openillink-project/openillink"><i class="fa fa-github"></i></a></p>
 			</div>

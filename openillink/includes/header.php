@@ -54,6 +54,7 @@ echo '<link rel="home" href="'.$siteUrl.'" />' ;
 echo '
 <link rel="stylesheet" href="'.$siteUrl.'/css/bulma.min.css">
 <link rel="stylesheet" href="'.$siteUrl.'/css/bulma-style.css">
+<link rel="stylesheet" href="'.$siteUrl.'/css/oi-style.css">
 <link rel="stylesheet" media="print" href="'.$siteUrl.'/css/print.css">
 <link rel="stylesheet" href="'.$siteUrl.'/css/awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">';
@@ -74,7 +75,7 @@ echo '
 <nav class="navbar has-shadow">
 	<div class="container">
 		<div class="navbar-brand">
-			<a class="navbar-item" href="'.$siteUrl.'"><span class="title is-3">'.$openIllinkOfficialTitle[$lang].'</span></a>
+			<a class="navbar-item" href="'.$siteUrl.'"><span class="title is-3">'.$sitetitle[$lang].'</span></a>
 			<div class="navbar-burger burger" data-target="navMenu">
 				<span></span>
 				<span></span>
@@ -97,7 +98,7 @@ echo '
 						<a class="navbar-item" href="'.$siteUrl.'?lang=es" title="Español">ES</a>
 					</div>
 				</div>
-				<span class="navbar-item"><a class="button is-info" href="index.php" title="' .$neworder[$lang]. '">' .$neworder[$lang]. '</a></span>
+				<span class="navbar-item"><a class="button is-info" href="index.php" title="' .__("New Order"). '">' .__("New Order"). '</a></span>
 				<a class="navbar-item is-tab" href="login.php" title="Login"><i class="fa fa-sign-in"></i></a>
 			</div>
 		</div>

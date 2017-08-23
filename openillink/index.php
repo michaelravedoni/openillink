@@ -37,7 +37,8 @@ $myhtmltitle = $configname[$lang] . " : nouvelle commande";
 $mybodyonload = "document.commande.nom.focus(); remplirauto();";
 if (($monaut == "admin")||($monaut == "sadmin")||($monaut == "user")){
     require ("includes/headeradmin.php");
-    echo "<h1><center>" . __("Document order form to the ") . " <a href=\"" . $configlibraryurl[$lang] . "\" target=\"_blank\">" . $configlibrary[$lang] . "</a></center></h1>\n";
+	// Not necessary (23.08.2017) MR
+    /*echo "<h1><center>" . __("Document order form to the ") . " <a href=\"" . $configlibraryurl[$lang] . "\" target=\"_blank\">" . $configlibrary[$lang] . "</a></center></h1>\n";*/
 	// Not defined (21.07.2017) MR
 	/*if (isset($secondmessage)) {
 		echo "<h2><center>" . __("") . "</center></h2>\n";
@@ -199,16 +200,17 @@ else{
         require ("includes/headeradmin.php");
     if ($monaut == "")
         require ("includes/header.php");
-    echo "<h1><center>" . __("Document order form to the ") . " <a href=\"" . $configlibraryurl[$lang] . "\" target=\"_blank\">" . $configlibrary[$lang] . "</a></center></h1>\n";
+    // Not necessary (23.08.2017) MR
+	/*echo "<h1><center>" . __("Document order form to the ") . " <a href=\"" . $configlibraryurl[$lang] . "\" target=\"_blank\">" . $configlibrary[$lang] . "</a></center></h1>\n";*/
 	// Not defined (21.07.2017) MR
 	/*if (isset($secondmessage)) {
 		echo "<h2><center>" . __("") . "</center></h2>\n";
 	}
 	*/
-    echo "<div class=\"box\"><div class=\"box-content\">\n";
+    echo "<div class=\"notification has-text-centered\">\n";
     echo "<b><font color=\"red\">" . __("Please note, all orders are subject to a financial contribution") . "</font></b><br />" . __("Contact us by email for more information (pricing, billing, etc.)") . " : <a href=\"mailto:" . $configlibraryemail[$lang] . "\">" . $configlibraryemail[$lang] . "</a>\n";
-    echo "</div></div>\n";
-    echo "<div class=\"box-footer\"><div class=\"box-footer-right\"></div></div>\n";
+    echo "</div>\n";
+	
     echo "<form action=\"new.php\" method=\"POST\" enctype=\"x-www-form-encoded\" name=\"commande\" onsubmit=\"javascript:okcooc()\">\n";
     echo "<input name=\"table\" type=\"hidden\" value=\"orders\">\n";
     echo "<input name=\"userid\" type=\"hidden\" value=\"\">\n";
@@ -226,20 +228,40 @@ else{
 
 // START User Fields
 // Display to all users
-echo "<div class=\"box\"><div class=\"box-content\">\n";
-echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"3\" width=\"100%\">\n";
-echo "<tr><td>\n";
-echo '<label for="nom">';
-echo __("Name") . " *</label> : </td><td><input name=\"nom\" id=\"nom\" type=\"text\" size=\"30\" value=\"\"></td><td>\n";
-echo '<label for="prenom">';
-echo __("First name") . " *</label> : </td><td><input name=\"prenom\" id=\"prenom\" type=\"text\" size=\"30\" value=\"\">\n";
+echo '
+<section class="message">
+	<div class="message-header">'.__("Personal informations").'</div>
+	<div class="message-body">
+	
+	<div class="field is-horizontal">
+      <label class="label field-label is-normal" for="nom">'.__("Name").' *</label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <input id="nom" name="nom" class="input" type="text" placeholder="'.__("Name").' : e.g. Dupont" required>
+        </div>
+       </div>
+       <div class="field has-addons">
+        <div class="control is-expanded">
+         <input id="prenom" name="prenom" class="input" type="text" placeholder="' .__("First name") .': e.g. Jean" required>
+        </div>
+       </div>';
 if ($directoryurl1 != "")
-    echo "&nbsp;<a href=\"javascript:directory('$directoryurl1')\" title=\"" . __("Search the name in the directory of the hospital") . "\"><img src=\"img/directory1.png\"></a>\n";
+	echo " <a href=\"javascript:directory('$directoryurl1')\" title=\"" . __("Search the name in the directory of the hospital") . "\"><span class=\"button is-small\"><i aria-hidden=\"true\" class=\"fa fa-address-book\"></i></span></a>\n";
 if ($directoryurl2 != "")
-    echo "<a href=\"javascript:directory('$directoryurl2')\" title=\"" . __("Search the name in the directory of the university") . "\"><img src=\"img/directory2.png\"></a>\n";
-echo "</td></tr><tr><td>\n";
-echo '<label for="service">';
-echo __("Unit") . " *</label> : </td><td>\n";
+	echo "<a href=\"javascript:directory('$directoryurl2')\" title=\"" . __("Search the name in the directory of the university") . "\"><span class=\"button is-small\"><i aria-hidden=\"true\" class=\"fa fa-university\"></i></span></a>\n";
+echo '
+      </div>
+	  </div>
+	
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="service">'.__("Unit").' *</label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <div class="select is-fullwidth">
+          <select id="service" name="service" required>
+						<option></option>';
 $unitsortlang = "name1";
 if ($lang == "en")
     $unitsortlang = "name2";
@@ -249,8 +271,6 @@ if ($lang == "it")
     $unitsortlang = "name4";
 if ($lang == "es")
     $unitsortlang = "name5";
-echo "<select name=\"service\" id=\"service\" style=\"max-width:300px\">\n";
-echo "<option value=\"\"></option>\n";
 if ($ip1 == 1)
     $requnits="SELECT code, $unitsortlang FROM units WHERE internalip1display = 1 ORDER BY $unitsortlang ASC";
 else if ($ip2 == 1)
@@ -266,159 +286,234 @@ while ($rowunits = iimysqli_result_fetch_array($resultunits)){
     $optionsunits.=">" . htmlspecialchars($nameunits) . "</option>\n";
 }
 echo $optionsunits;
-echo "</select>\n";
-echo "</td><td>\n";
-echo '<label for="servautre">';
-echo __("Other unit") . "</label> : </td><td>\n";
-echo "<input name=\"servautre\" id=\"servautre\" type=\"text\" size=\"30\" value=\"\">\n";
-echo "</td></tr>\n";
-if ($ip1 == 1){
-    echo "<tr><td>\n";
-	echo '<label for="cgra">';
-    echo __("Budget heading") . "</label> : \n";
-    echo "</td><td>\n";
-    echo "<input name=\"cgra\" id=\"cgra\" type=\"text\" size=\"30\" value=\"\"></td><td>\n";
-	echo '<label for="cgrb">';
-    echo __("Budget subheading") . "</label> : </td><td>\n";
-    echo "<input name=\"cgrb\" id=\"cgrb\" type=\"text\" size=\"30\" value=\"\">\n";
-    echo "</td></tr>\n";
-}
-else{
-    echo "<input name=\"cgra\" type=\"hidden\"  value=\"\">\n";
-    echo "<input name=\"cgrb\" type=\"hidden\"  value=\"\">\n";
-}
-echo "<tr><td>\n";
-echo '<label for="mail">';
-echo __("E-Mail") . " *</label> : </td><td>\n";
-echo "<input name=\"mail\" id=\"mail\" type=\"text\" size=\"30\" value=\"\"></td><td>\n";
-echo '<label for="tel">';
-echo __("Tel.") . "</label> : </td><td>\n";
-echo "<input name=\"tel\" id=\"tel\" type=\"text\" size=\"30\" value=\"\">\n";
-echo "</td></tr>\n";
-echo "<tr><td valign=\"top\">\n";
-echo '<label for="adresse">';
-echo __("Private address") . "</label> :\n";
-echo "</td><td>\n";
-echo "<input name=\"adresse\" id=\"adresse\" type=\"text\" size=\"30\" value=\"\">\n";
-echo "</td><td>\n";
-echo '<label for="postal">';
-echo __("Zip code") . "</label> : </td><td>\n";
-echo "<input name=\"postal\" id=\"postal\" type=\"text\" size=\"5\" value=\"\">\n";
-echo "&nbsp;\n";
-echo '<label for="localite">';
-echo __("City") . "</label> :\n";
-echo "<input name=\"localite\" id=\"localite\" type=\"text\" size=\"7\" value=\"\">\n";
-echo "</td></tr><tr><td valign=\"top\" colspan=\"4\">\n";
-echo __("If available at the library") . " : \n";
-echo "<input type=\"radio\" name=\"envoi\" id=\"envoimail\" value=\"mail\" checked/>\n";
-echo '<label for="envoimail">';
-echo __("send by e-mail (billed)") . "</label>&nbsp;\n";
-echo "<input type=\"radio\" name=\"envoi\" id=\"envoisurplace\" value=\"surplace\" />\n";
-echo '<label for="envoisurplace">';
-echo __("let me know and I come to make a copy (not billed)") . "</label>\n";
-echo "</td></tr>\n";
-echo "<tr>\n";
-echo "<td valign=\"top\" colspan=\"4\">\n";
-echo "<input type=\"checkbox\" name=\"cooc\" id=\"cooc\" value=\"on\" />\n";
-echo '<label for="cooc">';
-echo __("Remember data for future orders (cookies allowed)") . "</label>&nbsp;&nbsp;|&nbsp;&nbsp;(<A HREF=\"javascript:coocout()\">" . __("delete the cookie") . "</a>)\n";
-echo "</td></tr>\n";
-echo "</Table>\n";
-echo "\n";
-echo "</div></div>\n";
-echo "<div class=\"box-footer\"><div class=\"box-footer-right\"></div></div>\n";
-echo "\n";
-// END User Fields
+echo '
+          </select>
+         </div>
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input id="servautre" name="servautre" class="input" type="text" placeholder="'.__("Other unit").'">
+        </div>
+       </div>
+      </div>
+	  </div>
+	  
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="mail">'.__("E-Mail").'</label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <input id="mail" name="mail" class="input" type="email" placeholder="e.g. jean.dupont@exemple.com">
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input id="tel" class="input" type="tel" placeholder="'.__("Téléphone").': e.g. +41 79 123 45 67" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$">
+        </div>
+       </div>
+      </div>
+	  </div>
+	  
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="adresse">'.__("Private address").'</label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <input id="adresse" name="adresse" class="input" type="text" placeholder="e.g. Rue de Lausanne 2">
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input id="postal" name="postal" class="input" type="text" placeholder="e.g. 1001">
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input id="localite" name="localite" class="input" type="text" placeholder="e.g. Lausanne">
+        </div>
+       </div>
+      </div>
+	  </div>
+	  
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="adresse">'.__("Transmission").'</label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <label class="radio field-label is-normal">
+          <input type="radio" checked id="envoimail" name="envoi" value="mail"> '.__("Send by e-mail (billed)").'</label>
+         <label class="radio field-label is-normal">
+          <input type="radio" id="envoisurplace" name="envoi" value="surplace"> '.__("Let me know and I come to make a copy (not billed)").'</label>
+        </div>
+       </div>
+      </div>
+	  </div>
+	  
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="adresse"></label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <label class="checkbox">
+          <input id="cooc" name="cooc" type="checkbox" value="on">
+          '.__("Remember data for future orders (cookies allowed)").' | (<a href="javascript:coocout()">'. __("delete the cookie") .'</a>)
+        </label>
+        </div>
+       </div>
+      </div>
+	  </div>
+	  
+	</div>
+</section>';
 
 
-
-// START Document Fields
-echo "<div class=\"box\"><div class=\"box-content\">\n";
-echo "<div class=\"box\"><div class=\"box-content\">\n";
-echo "<center><b><label for=\"tid\">" . __("Fill in the order using") . "</label> </b>\n";
-echo "<select name=\"tid\" id=\"tid\">\n";
-foreach($lookupuid as $value) {
-    echo "<option value=\"" . htmlspecialchars($value["code"]) . "\">" . htmlspecialchars($value["name"]) . "</option>\n";
+echo '
+	<section class="message">
+		<div class="message-header">'.__("Document").'</div>
+    <div class="message-body">
+		<div class="box">
+			
+		<div class="field is-horizontal">
+       <label class="label field-label is-normal column is-4" for="tid">'. __("Fill in the order using") .'</label>
+       <div class="field-body">
+        <div class="field has-addons">
+         <div class="control">
+          <span class="select is-fullwidth">
+			<select id="tid" name="tid">';
+				foreach($lookupuid as $value) {
+echo "<option value=\"" . htmlspecialchars($value["code"]) . "\">" . htmlspecialchars($value["name"]) . "</option>\n";
 }
-echo "</select>\n";
-echo "<input name=\"uids\" type=\"text\" size=\"20\" value=\"\">\n";
-echo "<input type=\"button\" value=\"OK\" onclick=\"lookupid()\"></center>\n";
-echo "</div></div>\n";
-echo "<div class=\"box-footer\"><div class=\"box-footer-right\"></div></div>\n";
-echo "\n";
-echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"3\" width=\"100%\">\n";
+echo'
+			</select>
+		</span>
+         </div>
+         <div class="control"><input class="input" name="uids" placeholder="'. __("Identification number") .'" type="text" value=""></div>
+         <div class="control"><input class="button is-primary" onclick="lookupid()" type="button" value="'. __("Fill in") .'"></div>
+        </div>
+       </div>
+	   </div>
+	   
+	   </div> <!-- end .box -->
+	   
+	   <div class="field is-horizontal">';
 if((!empty($doctypesmessage)) && $doctypesmessage[$lang])
-    echo "<tr><td><label for=\"genre\">" . $doctypesmessage[$lang] . __("Document type")."</label> : </td><td>\n";
+	echo '<label class="label field-label is-normal" for="genre">'. $doctypesmessage[$lang] . __("Document type").'</label>';
 else
-    echo "<tr><td><label for=\"genre\">".__("Document type")."</label> : </td><td>\n";
-echo "<select name=\"genre\" id=\"genre\">\n";
-foreach($doctypes as $value) {
-    echo "<option value=\"" . htmlspecialchars($value["code"]) . "\">" . htmlspecialchars($value["name"]) . "</option>\n";
+	echo '<label class="label field-label is-normal" for="genre">'.__("Document type").'</label>';
+
+echo '
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <div class="select is-fullwidth">
+          <select id="genre" name="genre">';
+			  foreach($doctypes as $value) {
+echo "<option value=\"" . htmlspecialchars($value["code"]) . "\">" . htmlspecialchars($value["name"]) . "</option>\n";
 }
-echo "</select>\n";
-echo "<div class=\"formdoc\">\n";
-echo "</td></tr><tr><td>\n";
-echo '<label for="title">';
-echo __("Title of journal or book") . " *</label> : </td><td>\n";
-echo "<input name=\"title\" id=\"title\" type=\"text\" size=\"80\" value=\"\">\n";
-echo "&nbsp;\n";
-echo "<a href=\"javascript:openlist('".$periodical_title_search_url."')\"><img src=\"img/find.png\" title=\"" . __("check on journals database") . "\"></a>\n";
-echo "</td></tr><tr><td>\n";
-echo '<label for="date">';
-echo __("Year") . "</label> : </td><td>\n";
-echo "<input name=\"date\" id=\"date\" type=\"text\" size=\"3\" value=\"\">\n";
-echo "&nbsp;\n";
-echo '<label for="volume">';
-echo __("Vol.") . "</label> : \n";
-echo "<input name=\"volume\" id=\"volume\" type=\"text\" size=\"3\" value=\"\">\n";
-echo "&nbsp;\n";
-echo '<label for="issue">';
-echo __("(Issue)") . "</label> : \n";
-echo "<input name=\"issue\" id=\"issue\" type=\"text\" size=\"3\" value=\"\">\n";
-echo "&nbsp;\n";
-echo '<label for="suppl">';
-echo __("Suppl.") . "</label> : \n";
-echo "<input name=\"suppl\" id=\"suppl\" type=\"text\" size=\"3\" value=\"\">\n";
-echo "&nbsp;\n";
-echo '<label for="pages">';
-echo __("Pages") . "</label> : \n";
-echo "<input name=\"pages\" id=\"pages\" type=\"text\" size=\"4\" value=\"\">\n";
-echo "</td></tr><tr><td>\n";
-echo '<label for="atitle">';
-echo __("Title of article or book chapter") . "</label> : \n";
-echo "</td><td>\n";
-echo "<input name=\"atitle\" id=\"atitle\" type=\"text\" size=\"80\" value=\"\">\n";
-echo "</td></tr><tr><td>\n";
-echo '<label for="auteurs">';
-echo __("Author(s)") . "</label> : \n";
-echo "</td><td>\n";
-echo "<input name=\"auteurs\" id=\"auteurs\" type=\"text\" size=\"80\" value=\"\">\n";
-echo "</td></tr>\n";
-echo "<tr><td>\n";
-echo '<label for="edition">';
-echo __("Edition (for books)") . "</label> : \n";
-echo "</td><td>\n";
-echo "<input name=\"edition\" id=\"edition\" type=\"text\" size=\"14\" value=\"\">\n";
-echo "&nbsp;\n";
-echo "<label for=\"issn\">ISSN / ISBN</label> : \n";
-echo "<input name=\"issn\" id=\"issn\" type=\"text\" size=\"15\" value=\"\">\n";
-echo "&nbsp;\n";
-echo "<label for=\"uid\">UID</label> : \n";
-echo "<input name=\"uid\" id=\"uid\" type=\"text\" size=\"15\" value=\"\">\n";
-echo "</td></tr></div>\n";
-echo "<tr><td valign=\"top\">\n";
-echo '<label for="remarquespub">';
-echo __("Notes") . "</label> : \n";
-echo "</td><td valign=\"bottom\"><textarea name=\"remarquespub\" id=\"remarquespub\" rows=\"2\" cols=\"60\" valign=\"bottom\"></textarea>\n";
-echo "</td></tr><tr><td></td><td>\n";
-echo "</td></tr>\n";
-echo "</table>\n";
-echo "</div></div>\n";
-echo "<div class=\"box-footer\"><div class=\"box-footer-right\"></div></div>\n";
-echo '<div class="box-submit-buttons">';
-echo "<input type=\"submit\" value=\"" . __("Submit") . "\" onsubmit=\"javascript:okcooc();document.body.style.cursor = 'wait';\">&nbsp;&nbsp;\n";
-echo "<input type=\"reset\" value=\"" . __("Reset") . "\">\n";
-echo "</div>";
+echo '
+		</select>
+         </div>
+        </div>
+       </div>
+      </div>
+	  </div>
+	   
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="atitle">'.__("Article").'</label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <input class="input" id="atitle" name="atitle" type="text" placeholder="'.__("Title of article or chapter").'">
+        </div>
+       </div>
+      </div>
+	  </div>
+	  
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="genre">Périodique</label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <input class="input" id="title" name="title" type="text" placeholder="Titre du périodique ou du livre">
+        </div>
+       </div>
+       <a href="javascript:openlist(\''.$periodical_title_search_url.'\')"><span class="button is-small" title="'. __("check on journals database") .'"><i aria-hidden="true" class="fa fa-database"></i></span></a>
+      </div>
+	  </div>
+	  
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="date"></label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <input class="input" id="date" name="date" type="text" placeholder="'.__("Year").'">
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input class="input" id="volume" name="volume" type="text" placeholder="'.__("Volume").'">
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input class="input" id="issue" name="issue" type="text" placeholder="'.__("Issue (No)").'">
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input class="input" id="suppl" name="suppl" type="text" placeholder="'.__("Supplement").'">
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input class="input" id="pages" name="pages" type="text" placeholder="'.__("Pages").'">
+        </div>
+       </div>
+      </div>
+	  </div>
+	  
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="edition"></label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <input class="input" id="edition" name="edition" type="text" placeholder="'.__("Edition (for books)").'">
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input class="input" id="issn" name="issn" type="text" placeholder="ISSN / ISBN">
+        </div>
+       </div>
+       <div class="field">
+        <div class="control">
+         <input class="input" id="uid" name="uid" type="text" placeholder="UID">
+        </div>
+       </div>
+      </div>
+	  </div>
+	  
+	  <div class="field is-horizontal">
+      <label class="label field-label is-normal" for="remarquespub">'.__("Notes").'</label>
+      <div class="field-body">
+       <div class="field">
+        <div class="control">
+         <textarea id="remarquespub" name="remarquespub" class="textarea" placeholder="" rows="2"></textarea>
+        </div>
+       </div>
+      </div>
+	  </div>
+	  
+	  <div class="field is-grouped">
+      <input type="submit" class="button is-primary" value="'. __("Submit") .'" onsubmit="javascript:okcooc();document.body.style.cursor = \'wait\';" />
+      <input type="reset" value="'. __("Reset") .'" class="button is-link" />
+	  </div>
+	
+	</div>
+	</section>';
+	
 echo "</form>\n";
+
 require ("includes/footer.php");
 ?>
