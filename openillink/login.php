@@ -242,7 +242,7 @@ echo '
 */
 echo '
 				<p class="control">
-					<input name="submit" id="submit" class="button is-primary is-fullwidth" value="'.__("Login").'" />
+					<input type="submit" name="submit" id="submit" class="button is-primary is-fullwidth" value="'.__("Login").'" />
 					<input type="hidden" name="redirect_to" value="/" />
 				</p>
 				</form>
